@@ -9,10 +9,14 @@ async function DesktopNavbar() {
   const user = await currentUser();
 
   return (
-    <div className="hidden md:flex items-center space-x-4">
+    <div className="hidden md:flex items-center space-x-2">
       <ModeToggle />
 
-      <Button variant="ghost" className="flex items-center gap-2" asChild>
+      <Button
+        variant="ghost"
+        className="flex items-center gap-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+        asChild
+      >
         <Link href="/">
           <HomeIcon className="w-4 h-4" />
           <span className="hidden lg:inline">Home</span>
@@ -21,13 +25,21 @@ async function DesktopNavbar() {
 
       {user ? (
         <>
-          <Button variant="ghost" className="flex items-center gap-2" asChild>
+          <Button
+            variant="ghost"
+            className="flex items-center gap-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+            asChild
+          >
             <Link href="/notifications">
               <BellIcon className="w-4 h-4" />
               <span className="hidden lg:inline">Notifications</span>
             </Link>
           </Button>
-          <Button variant="ghost" className="flex items-center gap-2" asChild>
+          <Button
+            variant="ghost"
+            className="flex items-center gap-2 hover:bg-accent hover:text-accent-foreground transition-all duration-200"
+            asChild
+          >
             <Link
               href={`/profile/${
                 user.username ??
@@ -38,11 +50,18 @@ async function DesktopNavbar() {
               <span className="hidden lg:inline">Profile</span>
             </Link>
           </Button>
-          <UserButton />
+          <div className="ml-2">
+            <UserButton />
+          </div>
         </>
       ) : (
         <SignInButton mode="modal">
-          <Button variant="default">Sign In</Button>
+          <Button
+            variant="default"
+            className="hover:scale-105 transition-all duration-300 shadow-md"
+          >
+            Sign In
+          </Button>
         </SignInButton>
       )}
     </div>

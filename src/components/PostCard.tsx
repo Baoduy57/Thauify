@@ -84,12 +84,12 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
   };
 
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden animate-slide-up hover:shadow-md transition-all duration-200 border-border/50 hover:border-primary/20">
       <CardContent className="p-4 sm:p-6">
         <div className="space-y-4">
           <div className="flex space-x-3 sm:space-x-4">
-            <Link href={`/profile/${post.author.username}`}>
-              <Avatar className="size-8 sm:w-10 sm:h-10">
+            <Link href={`/profile/${post.author.username}`} className="group">
+              <Avatar className="size-8 sm:w-10 sm:h-10 ring-2 ring-transparent group-hover:ring-primary/30 transition-all duration-200">
                 <AvatarImage src={post.author.image ?? "/avatar.png"} />
               </Avatar>
             </Link>
@@ -100,12 +100,15 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                 <div className="flex flex-col sm:flex-row sm:items-center sm:space-x-2 truncate">
                   <Link
                     href={`/profile/${post.author.username}`}
-                    className="font-semibold truncate"
+                    className="font-semibold truncate hover:text-primary transition-colors"
                   >
                     {post.author.name}
                   </Link>
                   <div className="flex items-center space-x-2 text-sm text-muted-foreground">
-                    <Link href={`/profile/${post.author.username}`}>
+                    <Link
+                      href={`/profile/${post.author.username}`}
+                      className="hover:text-primary transition-colors"
+                    >
                       @{post.author.username}
                     </Link>
                     <span>•</span>
@@ -122,7 +125,7 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
                   />
                 )}
               </div>
-              <p className="mt-2 text-sm text-foreground break-words">
+              <p className="mt-2 text-sm text-foreground break-words leading-relaxed">
                 {post.content}
               </p>
             </div>
@@ -130,11 +133,11 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
 
           {/* POST IMAGE */}
           {post.image && (
-            <div className="rounded-lg overflow-hidden">
+            <div className="rounded-xl overflow-hidden group relative">
               <img
                 src={post.image}
                 alt="Post content"
-                className="w-full h-auto object-cover"
+                className="w-full h-auto object-cover transition-transform duration-300 group-hover:scale-105"
               />
             </div>
           )}
@@ -145,29 +148,29 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
               <Button
                 variant="ghost"
                 size="sm"
-                className={`text-muted-foreground gap-2 ${
+                className={`text-muted-foreground gap-2 transition-all duration-200 ${
                   hasLiked
                     ? "text-red-500 hover:text-red-600"
-                    : "hover:text-red-500"
+                    : "hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20"
                 }`}
                 onClick={handleLike}
               >
                 {hasLiked ? (
-                  <HeartIcon className="size-5 fill-current" />
+                  <HeartIcon className="size-5 fill-current animate-scale-in" />
                 ) : (
                   <HeartIcon className="size-5" />
                 )}
-                <span>{optimisticLikes}</span>
+                <span className="font-medium">{optimisticLikes}</span>
               </Button>
             ) : (
               <SignInButton mode="modal">
                 <Button
                   variant="ghost"
                   size="sm"
-                  className="text-muted-foreground gap-2"
+                  className="text-muted-foreground gap-2 hover:text-red-500 hover:bg-red-50 dark:hover:bg-red-950/20 transition-all duration-200"
                 >
                   <HeartIcon className="size-5" />
-                  <span>{optimisticLikes}</span>
+                  <span className="font-medium">{optimisticLikes}</span>
                 </Button>
               </SignInButton>
             )}
@@ -175,26 +178,33 @@ function PostCard({ post, dbUserId }: { post: Post; dbUserId: string | null }) {
             <Button
               variant="ghost"
               size="sm"
-              className="text-muted-foreground gap-2 hover:text-blue-500"
+              className={`text-muted-foreground gap-2 transition-all duration-200 ${
+                showComments
+                  ? "text-blue-500"
+                  : "hover:text-blue-500 hover:bg-blue-50 dark:hover:bg-blue-950/20"
+              }`}
               onClick={() => setShowComments((prev) => !prev)}
             >
               <MessageCircleIcon
-                className={`size-5 ${
+                className={`size-5 transition-all ${
                   showComments ? "fill-blue-500 text-blue-500" : ""
                 }`}
               />
-              <span>{post.comments.length}</span>
+              <span className="font-medium">{post.comments.length}</span>
             </Button>
           </div>
 
           {/* COMMENTS SECTION */}
           {showComments && (
-            <div className="space-y-4 pt-4 border-t">
+            <div className="space-y-4 pt-4 border-t animate-slide-up">
               <div className="space-y-4">
                 {/* DISPLAY COMMENTS */}
                 {post.comments.map((comment) => (
-                  <div key={comment.id} className="flex space-x-3">
-                    <Avatar className="size-8 flex-shrink-0">
+                  <div
+                    key={comment.id}
+                    className="flex space-x-3 p-3 rounded-lg hover:bg-muted/50 transition-colors duration-200"
+                  >
+                    <Avatar className="size-8 flex-shrink-0 ring-2 ring-border">
                       <AvatarImage
                         src={comment.author.image ?? "/avatar.png"}
                       />
